@@ -19,19 +19,20 @@ class StartManager {
         this.controlManager = controlManager;
         this.eventManager = eventManager;
         //event listener for handling websocket messages
-        this.eventManager.on(constants_1.qrwcEvents.message, (message) => {
+        this.eventManager.on('message', (message) => {
             this.parseMessage(message);
         });
-        this.eventManager.on(constants_1.qrwcEvents.componentsReceived, (components) => {
+        this.eventManager.on('componentsReceived', (components) => {
             this.getControls(components);
         });
-        this.eventManager.on(constants_1.qrwcEvents.controlsReceived, () => {
+        this.eventManager.on('controlsReceived', () => {
             this.createStartChangeGroup();
         });
         // listen for change group created event
-        this.eventManager.on(constants_1.qrwcEvents.componentChangeGroupCreated, (changeGroupId) => {
+        this.eventManager.on('componentChangeGroupCreated', (changeGroupId) => {
             // check if change group id matches startChangeGroupId
-            if (changeGroupId === this.startChangeGroupId && this.changeGroupManager) {
+            if (changeGroupId === this.startChangeGroupId &&
+                this.changeGroupManager) {
                 // create start change group polling service
                 this.createStartChangePollingManager();
             }
@@ -80,7 +81,7 @@ class StartManager {
         // check if getControlIds is empty
         if (this.getControlIds.length === 0) {
             // emit event
-            this.eventManager.emit(constants_1.qrwcEvents.controlsReceived);
+            this.eventManager.emit('controlsReceived');
         }
     }
     // a method for creating change groups
@@ -103,7 +104,7 @@ class StartManager {
             this.changeGroupManager.polling.start();
         }
         // emit event for start complete
-        this.eventManager.emit(constants_1.qrwcEvents.startComplete);
+        this.eventManager.emit('startComplete');
     }
     // a method for cleaning up the start manager
     cleanUp() {

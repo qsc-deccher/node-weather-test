@@ -16,7 +16,7 @@ class ChangeGroupManager {
         this.changeGroupComponents = [];
         this.changeGroupName = '';
         // listen for messages
-        this.eventManager.on(constants_1.qrwcEvents.message, (message) => {
+        this.eventManager.on('message', (message) => {
             this.parseMessage(message);
         });
         // assign change group name
@@ -47,7 +47,7 @@ class ChangeGroupManager {
         // check if polling service is already initialized
         if (this.pollingManager) {
             // emit error
-            this.eventManager.emit(constants_1.qrwcEvents.error, 'Polling service already initialized');
+            this.eventManager.emit('error', 'Polling service already initialized');
             return;
         }
         // create polling service
@@ -106,7 +106,10 @@ class ChangeGroupManager {
         // create request id
         const requestId = (0, uuid_1.v4)();
         // add request id to changeGroupUpdateRequests
-        this.changeGroupUpdateRequests = [...this.changeGroupUpdateRequests, requestId];
+        this.changeGroupUpdateRequests = [
+            ...this.changeGroupUpdateRequests,
+            requestId
+        ];
         // send addComponentControl request
         this.send((0, utils_1.createJSONRPCMessage)(constants_1.qrcMethods.changeGroup.addComponentControl, component, requestId));
     }
@@ -118,12 +121,12 @@ class ChangeGroupManager {
             this.changeGroupUpdateRequests = this.changeGroupUpdateRequests.filter((requestId) => requestId !== message.id);
             // if change group requests is empty, emit change group created event
             if (this.changeGroupUpdateRequests.length === 0) {
-                this.eventManager.emit(constants_1.qrwcEvents.componentChangeGroupCreated, this.changeGroupName);
+                this.eventManager.emit('componentChangeGroupCreated', this.changeGroupName);
             }
         }
         else {
             // emit error
-            this.eventManager.emit(constants_1.qrwcEvents.error, `Change group - ${this.changeGroupName} - request failed`);
+            this.eventManager.emit('error', `Change group - ${this.changeGroupName} - request failed`);
         }
     }
     cleanUp() {

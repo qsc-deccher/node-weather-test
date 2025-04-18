@@ -1,4 +1,5 @@
-import { ControlDecorator } from './managers/components/ControlDecorator';
+import type { ControlDecorator } from './managers/components/ControlDecorator';
+import type { Qrwc } from './managers/qrwc/Qrwc';
 export interface IControl {
     Name: string;
     Component: string;
@@ -73,7 +74,7 @@ interface IParams {
         String: string;
     };
 }
-interface IComponentsGetProperty {
+export interface IComponentsGetProperty {
     Name: string;
     Value: string;
     PrettyName: string;
@@ -83,9 +84,7 @@ export interface IComponent {
     ID: string;
     Name: string;
     Type: string;
-    Controls: {
-        [controlName: string]: ControlDecorator;
-    } | null;
+    Controls: Record<string, ControlDecorator> | null;
     ControlSource: number;
 }
 export interface IControlGet {
@@ -127,7 +126,7 @@ export interface IChangePollResult {
 export interface IRequestChanges {
     ResponseValues: boolean;
     Name: string;
-    Controls: IControl[];
+    Controls: IControlUpdate[];
 }
 export interface IRequestControls {
     Name: string;
@@ -141,17 +140,29 @@ export interface IEventEmitter {
     removeListener(event: string, listener: (...args: unknown[]) => void): void;
     removeAllListeners(): void;
 }
-export type QrwcEvents = {
-    message: 'message';
-    error: 'error';
-    disconnected: 'disconnected';
-    connected: 'connected';
-    webSocketAttached: 'webSocketAttached';
-    startComplete: 'startComplete';
-    controlsUpdated: 'controlsUpdated';
-    controlsReceived: 'controlsReceived';
-    componentsReceived: 'componentsReceived';
-    changeRequestSuccessful: 'changeRequestSuccessful';
-    componentChangeGroupCreated: 'componentChangeGroupCreated';
-};
+export interface IQrwcEvents {
+    message: (message: IServerMessage) => void;
+    error: (error: unknown) => void;
+    disconnected: (event: string) => void;
+    connected: () => void;
+    webSocketAttached: () => void;
+    startComplete: () => void;
+    controlsUpdated: (updatedComponent: IComponent) => void;
+    controlsReceived: () => void;
+    componentsReceived: (components: Record<string, IComponent>) => void;
+    changeRequestSuccessful: (changeRequest: IChangeRequest) => void;
+    componentChangeGroupCreated: (changeGroupId: string) => void;
+}
+export interface ISetupQrwcParams {
+    coreIpAddress: string;
+    maxReconnectAttempts?: number;
+    reconnectDelay?: number;
+    componentFilter?: IComponentFilter;
+    pollingInterval?: number;
+    onError?: (qrwc: Qrwc, error: unknown) => void;
+    onDisconnect?: (qrwc: Qrwc, event: string) => void;
+    onStartComplete?: (qrwc: Qrwc) => void;
+    onControlsUpdated?: (qrwc: Qrwc, updatedComponent: IComponent) => void;
+    onComponentsReceived?: (qrwc: Qrwc, components: Record<string, IComponent>) => void;
+}
 export {};

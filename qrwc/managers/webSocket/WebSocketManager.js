@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const constants_1 = require("../../constants");
 class WebSocketManager {
     constructor(socket, eventManager) {
         this.socket = null;
@@ -9,7 +8,7 @@ class WebSocketManager {
                 this.socket.send(JSON.stringify(data));
             }
             else {
-                this.eventManager.emit(constants_1.qrwcEvents.error, 'WebSocket is not open or not initialized.');
+                this.eventManager.emit('error', 'WebSocket is not open or not initialized.');
             }
         };
         this.socket = socket;
@@ -22,13 +21,13 @@ class WebSocketManager {
     }
     onMessage(event) {
         const message = JSON.parse(event.data);
-        this.eventManager.emit(constants_1.qrwcEvents.message, message);
+        this.eventManager.emit('message', message);
     }
     onError(error) {
-        this.eventManager.emit(constants_1.qrwcEvents.error, error);
+        this.eventManager.emit('error', error);
     }
     onClose(event) {
-        this.eventManager.emit(constants_1.qrwcEvents.disconnected, event);
+        this.eventManager.emit('disconnected', event.reason);
     }
     isOpen() {
         return this.getReadyState() === this.socket.OPEN;
@@ -38,18 +37,18 @@ class WebSocketManager {
             return this.socket.readyState;
         }
         else {
-            this.eventManager.emit(constants_1.qrwcEvents.error, 'WebSocket is not initialized.');
+            this.eventManager.emit('error', 'WebSocket is not initialized.');
         }
     }
     close(code, reason) {
         if (this.socket !== null && this.isOpen()) {
             // this.clearIntervals()
             // emit event for websocket close
-            this.eventManager.emit(constants_1.qrwcEvents.disconnected, 'WebSocket closed.');
+            this.eventManager.emit('disconnected', 'WebSocket closed.');
             this.socket.close(code, reason);
         }
         else {
-            this.eventManager.emit(constants_1.qrwcEvents.error, 'WebSocket is not open or not initialized.');
+            this.eventManager.emit('error', 'WebSocket is not open or not initialized.');
         }
     }
     // a method to clean up the websocket

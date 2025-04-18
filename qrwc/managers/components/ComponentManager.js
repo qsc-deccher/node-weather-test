@@ -12,7 +12,7 @@ class ComponentManager {
         this.componentNames = [];
         this.getComponentsId = '';
         //event listener for handling websocket messages
-        this.onMessage(constants_1.qrwcEvents.message, (message) => {
+        this.onMessage('message', (message) => {
             this.parseMessage(message);
         });
     }
@@ -50,7 +50,7 @@ class ComponentManager {
         let checkedComponents = result;
         // check if componentList is empty
         if (!result.length) {
-            this.emit(constants_1.qrwcEvents.error, 'No components found');
+            this.emit('error', 'No components found');
         }
         // check if there is a filter
         if (this.componentFilter) {
@@ -62,7 +62,7 @@ class ComponentManager {
         // set component list
         this.setComponentList(checkedComponents);
         // emit event when all components have been added to componentList
-        this.emit(constants_1.qrwcEvents.componentsReceived, this.componentList);
+        this.emit('componentsReceived', this.componentList);
     }
 }
 exports.default = ComponentManager;

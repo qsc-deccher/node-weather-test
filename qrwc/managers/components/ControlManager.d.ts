@@ -6,9 +6,7 @@ export default class ControlManager {
     private webSocketSend;
     private eventManager;
     private changeRequestManager;
-    components: {
-        [componentName: string]: IComponent;
-    };
+    components: Record<string, IComponent>;
     constructor(webSocketSend: (message: JSONRPCMessage) => void, eventManager: EventManager, changeRequestManager: ChangeRequestManager);
     decorateControl(control: IControl): ControlDecorator;
     handleControlChanges(changes: IChange[]): void;

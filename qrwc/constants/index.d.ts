@@ -1,18 +1,17 @@
-import { IComponent, QrwcEvents } from '../index.interface';
+import { IComponent } from '../index.interface';
 export declare const qrcMethods: {
-    components: {
-        getComponents: string;
-        getControls: string;
-        set: string;
+    readonly components: {
+        readonly getComponents: "Component.GetComponents";
+        readonly getControls: "Component.GetControls";
+        readonly set: "Component.Set";
     };
-    changeGroup: {
-        poll: string;
-        addControl: string;
-        addComponentControl: string;
+    readonly changeGroup: {
+        readonly poll: "ChangeGroup.Poll";
+        readonly addControl: "ChangeGroup.AddControl";
+        readonly addComponentControl: "ChangeGroup.AddComponentControl";
     };
 };
-export declare const qrwcEvents: QrwcEvents;
-export declare const qrwcPollReset: number;
-export declare const qrwcMinPollInterval: number;
-export declare const qrwcDefaultPollInterval: number;
+export declare const QrwcPollReset = 30000;
+export declare const QrwcMinPollInterval = 34;
+export declare const QrwcDefaultPollInterval = 350;
 export declare const qrwcMockComponentGetResult: IComponent;

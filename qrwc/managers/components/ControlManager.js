@@ -29,7 +29,7 @@ class ControlManager {
             // check if change is valid
             if (!(0, utils_1.isValidControlChange)(change)) {
                 // if change is invalid, emit error
-                this.eventManager.emit(constants_1.qrwcEvents.error, 'Invalid change');
+                this.eventManager.emit('error', 'Invalid change');
                 return;
             }
             // find existing control
@@ -43,7 +43,7 @@ class ControlManager {
             }
             else {
                 // emit error
-                this.eventManager.emit(constants_1.qrwcEvents.error, 'Connot update Control, existing Control not found');
+                this.eventManager.emit('error', 'Connot update Control, existing Control not found');
             }
         });
     }
@@ -52,7 +52,7 @@ class ControlManager {
         // check if websocketManager is defined
         if (this.webSocketSend) {
             // emit error
-            this.eventManager.emit(constants_1.qrwcEvents.error, 'Websocket send already attached');
+            this.eventManager.emit('error', 'Websocket send already attached');
             return;
         }
         this.webSocketSend = send;
@@ -62,14 +62,14 @@ class ControlManager {
         // update component
         this.components = Object.assign(Object.assign({}, this.components), { [newControl.Component]: Object.assign(Object.assign({}, this.components[newControl.Component]), { Controls: Object.assign(Object.assign({}, this.components[newControl.Component].Controls), { [newControl.Name]: newControl }) }) });
         // emit component updated event
-        this.eventManager.emit(constants_1.qrwcEvents.controlsUpdated, this.components[newControl.Component]);
+        this.eventManager.emit('controlsUpdated', this.components[newControl.Component]);
     }
     // a method for adding a new component to components
     addComponent(component, componentName) {
         // check if component exists
         if (this.components[componentName]) {
             // if component exists, emit error
-            this.eventManager.emit(constants_1.qrwcEvents.error, 'Component already exists');
+            this.eventManager.emit('error', 'Component already exists');
             return;
         }
         // add component to components
@@ -89,7 +89,7 @@ class ControlManager {
         // check if webSocketSend is defined
         if (!this.webSocketSend) {
             // if webSocketManager is not defined, emit error
-            this.eventManager.emit(constants_1.qrwcEvents.error, 'WebSocketManager is not defined');
+            this.eventManager.emit('error', 'WebSocketManager is not defined');
             return;
         }
         // send setControlValue request
@@ -100,13 +100,13 @@ class ControlManager {
         // check if component exists
         if (!this.components[componentName]) {
             // if component does not exist, emit error
-            this.eventManager.emit(constants_1.qrwcEvents.error, 'Component does not exist');
+            this.eventManager.emit('error', 'Component does not exist');
             return;
         }
         // check if control exists
         if (!this.components[componentName].Controls[controlName]) {
             // if control does not exist, emit error
-            this.eventManager.emit(constants_1.qrwcEvents.error, 'Control does not exist');
+            this.eventManager.emit('error', 'Control does not exist');
             return;
         }
         // return control

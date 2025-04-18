@@ -6,7 +6,7 @@ class PollingManager {
     constructor(changeGroupId, send, newPollingInterval) {
         this.send = send;
         this.newPollingInterval = newPollingInterval;
-        this.pollInterval = constants_1.qrwcDefaultPollInterval;
+        this.pollInterval = constants_1.QrwcDefaultPollInterval;
         this.intervalId = null;
         this.socketPollId = 1;
         this.changeGroupId = changeGroupId;
@@ -19,12 +19,12 @@ class PollingManager {
     // setter for polling interval
     set interval(interval) {
         // set interval if above Minimum interval
-        if (interval >= constants_1.qrwcMinPollInterval)
+        if (interval >= constants_1.QrwcMinPollInterval)
             this.pollInterval = interval;
     }
     // check if given polling interval is valid
     isValidInterval(interval) {
-        return interval >= constants_1.qrwcMinPollInterval;
+        return interval >= constants_1.QrwcMinPollInterval;
     }
     // a method to start polling
     start() {
@@ -45,7 +45,7 @@ class PollingManager {
     incrementSocketPollId() {
         this.socketPollId++;
         // reset socketPollId after 30 seconds
-        const numPollsBeforeReset = Math.floor(constants_1.qrwcPollReset / this.pollInterval);
+        const numPollsBeforeReset = Math.floor(constants_1.QrwcPollReset / this.pollInterval);
         if (this.socketPollId > numPollsBeforeReset) {
             this.socketPollId = 1;
         }
@@ -55,7 +55,7 @@ class PollingManager {
         // clear the interval
         clearInterval(this.intervalId);
         // reset the pollInterval to its initial value
-        this.pollInterval = constants_1.qrwcDefaultPollInterval;
+        this.pollInterval = constants_1.QrwcDefaultPollInterval;
         // reset the socketPollId
         this.socketPollId = 1;
         // replace the send method with a no-op

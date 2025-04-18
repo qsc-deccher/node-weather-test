@@ -1,11 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const constants_1 = require("../../constants");
 class ChangeRequestManager {
     constructor(eventManager) {
         this.eventManager = eventManager;
         this.changeRequestIds = [];
-        this.eventManager.on(constants_1.qrwcEvents.message, (message) => {
+        this.eventManager.on('message', (message) => {
             this.parseMessage(message);
         });
     }
@@ -70,12 +69,12 @@ class ChangeRequestManager {
     }
     // a method for emitting a successful change request
     emitSuccessfulChangeRequest(changeRequest) {
-        this.eventManager.emit(constants_1.qrwcEvents.changeRequestSuccessful, changeRequest);
+        this.eventManager.emit('changeRequestSuccessful', changeRequest);
     }
     // a method for emitting a failed change request
     emitFailedChangeRequest(changeRequest) {
         const errorMessage = `Change request for ${changeRequest.component} failed`;
-        this.eventManager.emit(constants_1.qrwcEvents.error, errorMessage);
+        this.eventManager.emit('error', errorMessage);
     }
     // a temp method to check if is array and not emtpy
     isArrayNotEmpty(array) {

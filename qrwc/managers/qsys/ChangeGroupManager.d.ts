@@ -18,9 +18,7 @@ export default class ChangeGroupManager {
     get polling(): PollingManager | null;
     initPollingManager(): void;
     private parseMessage;
-    groomComponents(components: {
-        [componentName: string]: IComponent;
-    }): IComponentChangeGroup[];
+    groomComponents(components: Record<string, IComponent>): IComponentChangeGroup[];
     createChangeGroup(components: IComponentChangeGroup[]): void;
     addComponentToChangeGroup(component: IComponentChangeGroup): void;
     private handleChangeGroupResponse;

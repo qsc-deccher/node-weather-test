@@ -9,12 +9,12 @@ const createJSONRPCMessage = (method, params, id) => ({
 });
 exports.createJSONRPCMessage = createJSONRPCMessage;
 function isValidControlChange(control) {
-    return control &&
+    return (control &&
         typeof control.Name === 'string' &&
         typeof control.Component === 'string' &&
         typeof control.Value === 'number' &&
         typeof control.String === 'string' &&
-        typeof control.Position === 'number';
+        typeof control.Position === 'number');
 }
 exports.isValidControlChange = isValidControlChange;
 //# sourceMappingURL=index.js.map

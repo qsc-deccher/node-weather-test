@@ -1,4 +1,4 @@
-import { IControl, IControlUpdate } from '../../index.interface';
+import { IControl, IControlUpdate, IQrwcEvents } from '../../index.interface';
 /**
  * ControlDecorator class
  *
@@ -10,7 +10,7 @@ import { IControl, IControlUpdate } from '../../index.interface';
  * The getMetaProperty method returns the value of a requested property, or undefined if the property does not exist.
  * If the property does not exist, an error event is also emitted.
  */
-export declare class ControlDecorator {
+export declare class ControlDecorator implements IControl {
     private control;
     private setComponent;
     private emit;
@@ -20,7 +20,7 @@ export declare class ControlDecorator {
      * @param setComponent - The function to use to update the control
      * @param emit - The function to handle events
      */
-    constructor(control: IControl, setComponent: (componentName: string, controlToUpdate: IControlUpdate) => void, emit: (event: string, message?: string) => void);
+    constructor(control: IControl, setComponent: (componentName: string, controlToUpdate: IControlUpdate) => void, emit: <T extends keyof IQrwcEvents, U extends Parameters<IQrwcEvents[T]>>(event: T, ...args: U) => void);
     /**
      * Getters and setters for the properties of the control.
      * These getters and setters allow users to access and update the properties of the control.

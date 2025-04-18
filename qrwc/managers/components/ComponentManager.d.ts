@@ -5,9 +5,7 @@ export default class ComponentManager {
     private emit;
     private websocketSend;
     private componentFilter?;
-    componentList: {
-        [componentName: string]: IComponent;
-    };
+    componentList: Record<string, IComponent>;
     componentNames: string[];
     private getComponentsId;
     constructor(onMessage: (event: string, listener: (message: IServerMessage) => void) => void, emit: (event: string, ...args: unknown[]) => void, websocketSend: (message: JSONRPCMessage) => void, componentFilter?: (component: IComponent) => boolean);

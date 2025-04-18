@@ -17,18 +17,6 @@ class Qrwc {
         this.webSocketManager = null;
         this.startManager = null;
         this.changeGroupManagers = {};
-        this.initialize = () => __awaiter(this, void 0, void 0, function* () {
-            // main dependencies
-            // create EventManager instance
-            this.eventManager = new __1.EventManager();
-            yield this.eventManager.initializeEmitter();
-            // create ChangeRequestManager instance
-            this.changeRequestManager = new __1.ChangeRequestManager(this.eventManager);
-            this.eventManager.on(constants_1.qrwcEvents.disconnected, () => {
-                // initate clean up
-                this.qrwcCleanUp();
-            });
-        });
         this.createStartManager = (validatedPollingInterval) => {
             // create StartManager instance
             this.startManager = new __1.StartManager(this.webSocketManager.send.bind(this.webSocketManager), this.componentManager, this.controlManager, this.eventManager, validatedPollingInterval);
@@ -41,7 +29,15 @@ class Qrwc {
             // create ComponentManager instance
             this.componentManager = new __1.ComponentManager(this.eventManager.on.bind(this.eventManager), this.eventManager.emit.bind(this.eventManager), this.webSocketManager.send.bind(this.webSocketManager), componentFilter);
         };
-        this.initialize();
+        // main dependencies
+        // create EventManager instance
+        this.eventManager = new __1.EventManager();
+        // create ChangeRequestManager instance
+        this.changeRequestManager = new __1.ChangeRequestManager(this.eventManager);
+        this.eventManager.on('disconnected', () => {
+            // initate clean up
+            this.qrwcCleanUp();
+        });
     }
     // a getter method for components
     get components() {
@@ -93,24 +89,26 @@ class Qrwc {
     }
     // Helper function to validate component filter
     validateComponentFilter(componentFilter) {
-        const isValid = typeof componentFilter === 'function' && typeof componentFilter(constants_1.qrwcMockComponentGetResult) === 'boolean';
+        const isValid = typeof componentFilter === 'function' &&
+            typeof componentFilter(constants_1.qrwcMockComponentGetResult) === 'boolean';
         if (!isValid) {
-            this.eventManager.emit(constants_1.qrwcEvents.error, 'Invalid componentFilter, using defaults');
+            this.eventManager.emit('error', 'Invalid componentFilter, using defaults');
         }
         return isValid;
     }
     // Helper function to validate polling interval
     validatePollingInterval(pollingInterval) {
-        const isValid = typeof pollingInterval === 'number' && pollingInterval >= constants_1.qrwcMinPollInterval;
+        const isValid = typeof pollingInterval === 'number' &&
+            pollingInterval >= constants_1.QrwcMinPollInterval;
         if (!isValid) {
-            this.eventManager.emit(constants_1.qrwcEvents.error, `Invalid pollingInterval, must be a number greater than ${constants_1.qrwcMinPollInterval}, using defaults`);
+            this.eventManager.emit('error', `Invalid pollingInterval, must be a number greater than ${constants_1.QrwcMinPollInterval}, using defaults`);
         }
         return isValid;
     }
     // Method to check if webSocketManager is initialized
     checkWebSocketManagerInitialized() {
         if (!this.webSocketManager) {
-            this.eventManager.emit(constants_1.qrwcEvents.error, 'web socket not initialized');
+            this.eventManager.emit('error', 'web socket not initialized');
             return false;
         }
         return true;
@@ -118,7 +116,7 @@ class Qrwc {
     // Method to check if startManager is initialized
     checkStartManagerInitialized() {
         if (this.startManager) {
-            this.eventManager.emit(constants_1.qrwcEvents.error, 'start already initialized');
+            this.eventManager.emit('error', 'start already initialized');
             return true;
         }
         return false;

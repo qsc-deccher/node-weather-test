@@ -1,5 +1,5 @@
 import { WebSocketManager, ControlManager, EventManager, ChangeRequestManager, ChangeGroupManager, ComponentManager, StartManager } from '..';
-import { IComponent, IComponentFilter, IStartOptions } from '../../index.interface';
+import { IComponent, IComponentFilter, IStartOptions, IQrwcEvents } from '../../index.interface';
 export declare class Qrwc {
     webSocketManager: WebSocketManager | null;
     startManager: StartManager | null;
@@ -11,10 +11,7 @@ export declare class Qrwc {
     };
     changeRequestManager: ChangeRequestManager;
     constructor();
-    private initialize;
-    get components(): {
-        [componentName: string]: IComponent;
-    };
+    get components(): Record<string, IComponent>;
     attachWebSocket(socket: WebSocket): Promise<void>;
     start({ componentFilter, pollingInterval }?: IStartOptions): Promise<void>;
     private createStartManager;
@@ -26,6 +23,6 @@ export declare class Qrwc {
     checkStartManagerInitialized(): boolean;
     getReadyState(): number;
     close(): void;
-    on(event: string, listener: (...args: unknown[]) => void): void;
+    on<T extends keyof IQrwcEvents, U extends IQrwcEvents[T]>(event: T, listener: U): void;
     qrwcCleanUp(): void;
 }

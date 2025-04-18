@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.qrwcMockComponentGetResult = exports.qrwcDefaultPollInterval = exports.qrwcMinPollInterval = exports.qrwcPollReset = exports.qrwcEvents = exports.qrcMethods = void 0;
+exports.qrwcMockComponentGetResult = exports.QrwcDefaultPollInterval = exports.QrwcMinPollInterval = exports.QrwcPollReset = exports.qrcMethods = void 0;
 exports.qrcMethods = {
     components: {
         getComponents: 'Component.GetComponents',
@@ -13,22 +13,9 @@ exports.qrcMethods = {
         addComponentControl: 'ChangeGroup.AddComponentControl'
     }
 };
-exports.qrwcEvents = {
-    message: 'message',
-    error: 'error',
-    disconnected: 'disconnected',
-    connected: 'connected',
-    webSocketAttached: 'webSocketAttached',
-    startComplete: 'startComplete',
-    controlsUpdated: 'controlsUpdated',
-    controlsReceived: 'controlsReceived',
-    componentsReceived: 'componentsReceived',
-    changeRequestSuccessful: 'changeRequestSuccessful',
-    componentChangeGroupCreated: 'componentChangeGroupCreated'
-};
-exports.qrwcPollReset = 30000;
-exports.qrwcMinPollInterval = 34;
-exports.qrwcDefaultPollInterval = 350;
+exports.QrwcPollReset = 30000;
+exports.QrwcMinPollInterval = 34;
+exports.QrwcDefaultPollInterval = 350;
 exports.qrwcMockComponentGetResult = {
     Name: 'mock',
     Properties: [],

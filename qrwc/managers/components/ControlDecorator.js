@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ControlDecorator = void 0;
-const constants_1 = require("../../constants");
 /**
  * ControlDecorator class
  *
@@ -129,7 +128,7 @@ class ControlDecorator {
      */
     getMetaProperty(propertyName) {
         if (!Object.prototype.hasOwnProperty.call(this.control, propertyName)) {
-            this.emit(constants_1.qrwcEvents.error, `Property ${propertyName} does not exist on the control: ${this.control.Name}`);
+            this.emit('error', `Property ${propertyName} does not exist on the control: ${this.control.Name}`);
             return;
         }
         return this.control[propertyName];
