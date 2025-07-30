@@ -6,18 +6,19 @@ import url from 'url';
 
 const youCoreIP = process.platform === "win32" ? "10.126.8.139" : "127.0.0.1";
 //  const socket = new WebSocket(`ws://${youCoreIP}/qrc-public-api/v0`);
-const socket = new WebSocket(`wss://${youCoreIP}/qrc-public-api/v0`);
+const socket = new WebSocket(`ws://${youCoreIP}/qrc-public-api/v0`);
+socket.on("error",(ws, code, reason) =>
+{
 
-const qrwc = await Qrwc.createQrwc<{
-  weather : 'go' |'message' | 'icon'
-}>({
+} )
+
+const qrwc = await Qrwc.createQrwc({
   socket,
   polllingInterval: 100
 })
-let isStarted = false;
 
 const weather = qrwc.components.weather;
-weather.on('update', async ({ Value, Position, String, Bool }) => {
+weather.controls.go.on('update', async ({ Value, Position, String, Bool }) => {
   console.log("hey")
 
 
@@ -49,13 +50,8 @@ weather.on('update', async ({ Value, Position, String, Bool }) => {
   let msg = `In ${data.name} it is currently ${data.main.temp}°
 but it feels like ${data.main.feels_like}° `
 
-  if (qrwc.components.weather.Controls.message.String != msg)
-    qrwc.components.weather.Controls.message.String = msg
-
-  let icon = iconMap[data.weather[0].icon]
-
-  if (qrwc.components.weather.Controls.icon.String != icon)
-    qrwc.components.weather.Controls.icon.String = icon
+  weather.controls.message.update(msg)
+  weather.controls.icon.update(iconMap[data.weather[0].icon])
 
 })
 
