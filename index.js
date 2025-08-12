@@ -2,11 +2,25 @@ import { Qrwc } from '@q-sys/qrwc';
 import WebSocket from "ws";
 import got from 'got';
 import url from 'url';
+import os from 'os';
+import 'dotenv/config';
 
+function getCoreIP() {
+  if (process.env.CORE_IP) return process.env.CORE_IP;
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return '127.0.0.1';
+}
+const coreIP = getCoreIP();
+console.log("Connecting to Core IP:", coreIP);
 
-const youCoreIP = process.platform === "win32" ? "10.126.8.139" : "127.0.0.1";
-//  const socket = new WebSocket(`ws://${youCoreIP}/qrc-public-api/v0`);
-const socket = new WebSocket(`ws://${youCoreIP}/qrc-public-api/v0`);
+const socket = new WebSocket(`ws://${coreIP}/qrc-public-api/v0`);
 socket.on("error",(ws, code, reason) =>
 {
 
